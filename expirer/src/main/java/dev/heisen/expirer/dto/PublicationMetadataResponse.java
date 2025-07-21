@@ -1,15 +1,16 @@
-package dev.heisen.upload.event;
+package dev.heisen.expirer.dto;
 
 import lombok.Builder;
 
 import java.time.Instant;
 
 @Builder
-public record PublicationEvent(
+public record PublicationMetadataResponse(
         String hash,
         String title,
         String author,
         Instant createdAt,
-        int ttlMinutes
+        int ttlMinutes,
+        boolean isExpired
 ) {
 }

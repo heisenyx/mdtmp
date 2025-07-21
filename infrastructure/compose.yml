@@ -92,19 +92,35 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
       SCHEMA_REGISTRY_LISTENERS: http://kafka-schema-registry:8081
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:8081/subjects || exit 1"]
+      test: ["CMD-SHELL", "curl --fail http://localhost:8083/subjects || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    image: redis:7.4.5-alpine
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "20", "1", "--loglevel", "notice", "--requirepass", "redis"]
+    volumes:
+      - cache:/data
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   postgres_publications_data:
     driver: local
   minio_data:
     driver: local
-  zookeeper_data:
-    driver: local
   kafka_data:
+    driver: local
+  cache:
     driver: local
 
 networks:

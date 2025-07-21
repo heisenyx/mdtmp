@@ -37,7 +37,7 @@ public class PublicationService {
                 .hash(generatedHash)
                 .title(request.title())
                 .author(request.author())
-                .createdAt(now.toEpochMilli())
+                .createdAt(now)
                 .ttlMinutes(request.ttlMinutes())
                 .build();
         kafkaTemplate.send("publication-upload", event);
@@ -62,5 +62,13 @@ public class PublicationService {
         }
 
         return content;
+    }
+
+    public void delete(String hash) {
+        try {
+            s3Service.deleteFile(hash);
+        } catch (Exception e) {
+            throw new StorageException("Failed to delete file from S3", e);
+        }
     }
 }

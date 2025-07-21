@@ -4,10 +4,7 @@ import dev.heisen.metadata.dto.PublicationMetadataResponse;
 import dev.heisen.metadata.service.MetadataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/publication/metadata")
@@ -22,5 +19,13 @@ public class MetadataController {
     ) {
         PublicationMetadataResponse response = metadataService.get(hash);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{hash}/expire")
+    public ResponseEntity<?> expireMetadata(
+            @PathVariable("hash") String hash
+    ) {
+        metadataService.expire(hash);
+        return ResponseEntity.noContent().build();
     }
 }

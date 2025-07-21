@@ -18,14 +18,14 @@ public class MetadataService {
     private final PublicationRepository repository;
     private final PublicationMapper mapper;
 
-    @KafkaListener(topics = "publication-upload", groupId = "metadata-service")
+    @KafkaListener(topics = "publication-upload")
     public PublicationMetadataResponse create(PublicationEvent event) {
 
         Publication publication = Publication.builder()
                 .hash(event.hash())
                 .title(event.title())
                 .author(event.author())
-                .createdAt(Instant.ofEpochMilli(event.createdAt()))
+                .createdAt(event.createdAt())
                 .ttlMinutes(event.ttlMinutes())
                 .isExpired(false)
                 .build();
@@ -40,5 +40,13 @@ public class MetadataService {
                 .orElseThrow(() -> new RuntimeException("Publication not found"));
 
         return mapper.toResponse(publication);
+    }
+
+    public void expire(String hash) {
+
+        Publication publication = repository.findByHash(hash)
+                .orElseThrow(() -> new RuntimeException("Publication not found"));
+        publication.setExpired(true);
+        repository.save(publication);
     }
 }
