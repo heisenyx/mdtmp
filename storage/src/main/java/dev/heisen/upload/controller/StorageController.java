@@ -1,0 +1,35 @@
+package dev.heisen.upload.controller;
+
+import dev.heisen.upload.dto.PublicationRequest;
+import dev.heisen.upload.dto.PublicationResponse;
+import dev.heisen.upload.service.PublicationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/publication")
+@RequiredArgsConstructor
+@Validated
+public class StorageController {
+
+    private final PublicationService publicationService;
+
+    @PostMapping("/publish")
+    public ResponseEntity<PublicationResponse> publish(
+            @RequestBody PublicationRequest request
+    ) {
+        PublicationResponse response = publicationService.create(request);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/content/{hash}")
+    public ResponseEntity<String> getContent(
+            @PathVariable("hash") String hash
+    ) {
+        String content = publicationService.getContent(hash);
+        return ResponseEntity.ok(content);
+    }
+}

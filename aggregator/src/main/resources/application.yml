@@ -1,0 +1,13 @@
+server:
+  port: 8082
+services:
+  storage:
+    url: http://localhost:8080/api/v1/publication
+  metadata:
+    url: http://localhost:8081/api/v1/publication
+
+spring:
+  application:
+    name: aggregator-service
+  config:
+    import: optional:file:.env[.properties]

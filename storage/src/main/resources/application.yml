@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: storage-service
+  config:
+    import: optional:file:.env[.properties]
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: publication-upload
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+aws:
+  s3:
+    bucket: ${AWS_S3_BUCKET:publications}
+    region: ${AWS_REGION:eu-east-1}
+    access-key: ${AWS_ACCESS_KEY_ID:minioroot}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:minioroot}
+    endpoint: http://localhost:9000
