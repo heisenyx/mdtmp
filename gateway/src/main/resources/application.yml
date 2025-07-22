@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  config:
+    import: optional:file:.env[.properties]
+
+  cloud:
+    gateway:
+      server.webmvc.routes:
+        - id: aggregator_service
+          uri: http://localhost:8083
+          predicates:
+            - "Path=/api/v1/publications/{hash}"
+            - "Method=GET"
+
+        - id: metadata_service
+          uri: http://localhost:8082
+          predicates:
+            - "Path=/api/v1/publications/metadata/**"
+            - "Method=GET,PUT"
+
+        - id: storage_service
+          uri: http://localhost:8081
+          predicates:
+            - "Path=/api/v1/publications/**"
+            - "Method=GET,POST"
+
+        # API documentation
+        - id: docs_storage
+          uri: http://localhost:8081
+          predicates:
+            - "Path=/docs/storage/v3/api-docs/**"
+          filters:
+            - RewritePath=/docs/storage/(?<segment>.*), /$\{segment}
+
+        - id: docs_metadata
+          uri: http://localhost:8082
+          predicates:
+            - "Path=/docs/metadata/v3/api-docs/**"
+          filters:
+            - RewritePath=/docs/metadata/(?<segment>.*), /$\{segment}
+
+        - id: docs_aggregator
+          uri: http://localhost:8083
+          predicates:
+            - "Path=/docs/aggregator/v3/api-docs/**"
+          filters:
+            - RewritePath=/docs/aggregator/(?<segment>.*), /$\{segment}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Storage Service
+        url: /docs/storage/v3/api-docs
+      - name: Metadata Service
+        url: /docs/metadata/v3/api-docs
+      - name: Aggregator Service
+        url: /docs/aggregator/v3/api-docs
+  api-docs:
+    path: /v3/api-docs

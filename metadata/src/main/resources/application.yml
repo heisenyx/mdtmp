@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:
@@ -29,3 +29,9 @@ spring:
       properties:
         spring.json.type.mapping: publication-upload:dev.heisen.upload.event.PublicationEvent
       group-id: metadata-service
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
