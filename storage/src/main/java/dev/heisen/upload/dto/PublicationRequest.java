@@ -2,7 +2,10 @@ package dev.heisen.upload.dto;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
+import org.springframework.validation.annotation.Validated;
 
+@Builder
 public record PublicationRequest(
 
         @NotBlank

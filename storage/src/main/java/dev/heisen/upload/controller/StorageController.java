@@ -6,11 +6,13 @@ import dev.heisen.upload.service.PublicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/publications")
 @RequiredArgsConstructor
+@Validated
 public class StorageController {
 
     private final PublicationService publicationService;

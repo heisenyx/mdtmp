@@ -1,6 +1,7 @@
 package dev.heisen.metadata.service;
 
 import dev.heisen.metadata.dto.PublicationMetadataResponse;
+import dev.heisen.metadata.exception.PublicationNotFoundException;
 import dev.heisen.upload.event.PublicationEvent;
 import dev.heisen.metadata.mapper.PublicationMapper;
 import dev.heisen.metadata.model.Publication;
@@ -8,8 +9,6 @@ import dev.heisen.metadata.repository.PublicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
@@ -36,16 +35,16 @@ public class MetadataService {
 
     public PublicationMetadataResponse get(String hash) {
 
-        Publication publication = repository.findByHash(hash)
-                .orElseThrow(() -> new RuntimeException("Publication not found"));
+        Publication publication = repository.findByHashAndExpiredFalse(hash)
+                .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
 
         return mapper.toResponse(publication);
     }
 
     public void expire(String hash) {
 
-        Publication publication = repository.findByHash(hash)
-                .orElseThrow(() -> new RuntimeException("Publication not found"));
+        Publication publication = repository.findByHashAndExpiredFalse(hash)
+                .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
         publication.setExpired(true);
         repository.save(publication);
     }

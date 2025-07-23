@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PublicationRepository extends JpaRepository<Publication, String> {
-    Optional<Publication> findByHash(String hash);
+    Optional<Publication> findByHashAndExpiredFalse(String hash);
 }
