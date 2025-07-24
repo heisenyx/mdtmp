@@ -4,19 +4,16 @@ import dev.heisen.upload.dto.PublicationRequest;
 import dev.heisen.upload.dto.PublicationResponse;
 import dev.heisen.upload.event.PublicationEvent;
 import dev.heisen.upload.exception.StorageException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-@Validated
 public class PublicationService {
 
     private static final String MARKDOWN_CONTENT_TYPE = "text/markdown";
@@ -24,7 +21,7 @@ public class PublicationService {
     private final S3Service s3Service;
     private final KafkaTemplate<String, PublicationEvent> kafkaTemplate;
 
-    public PublicationResponse create(@Valid PublicationRequest request) {
+    public PublicationResponse create(PublicationRequest request) {
 
         String generatedHash = RandomStringUtils.secureStrong().nextAlphanumeric(8);
         byte[] data = request.content().getBytes(StandardCharsets.UTF_8);

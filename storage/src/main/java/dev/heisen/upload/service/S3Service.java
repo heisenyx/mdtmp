@@ -23,7 +23,6 @@ public class S3Service {
                 .bucket(bucketName)
                 .key(key)
                 .contentType(contentType)
-                .contentDisposition("inline; filename=\"" + key + ".md\"")
                 .build();
 
         try {

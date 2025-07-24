@@ -4,6 +4,7 @@ import dev.heisen.upload.dto.PublicationRequest;
 import dev.heisen.upload.dto.PublicationResponse;
 import dev.heisen.upload.service.PublicationService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +29,7 @@ public class StorageController {
 
     @GetMapping("/content/{hash}")
     public ResponseEntity<String> getContent(
-            @PathVariable("hash") String hash
+            @Size(max = 8) @PathVariable("hash") String hash
     ) {
         String content = publicationService.getContent(hash);
         return ResponseEntity.ok(content);
@@ -36,7 +37,7 @@ public class StorageController {
 
     @DeleteMapping("/content/{hash}")
     public ResponseEntity<?> deleteContent(
-            @PathVariable("hash") String hash
+            @Size(max = 8) @PathVariable("hash") String hash
     ) {
         publicationService.delete(hash);
         return ResponseEntity.noContent().build();

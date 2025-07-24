@@ -3,8 +3,7 @@ package dev.heisen.aggregator.service;
 import dev.heisen.aggregator.client.MetadataClient;
 import dev.heisen.aggregator.client.StorageClient;
 import dev.heisen.aggregator.dto.AggregatedPublication;
-import dev.heisen.aggregator.dto.PublicationMetadataResponse;
-import org.junit.jupiter.api.BeforeEach;
+import dev.heisen.aggregator.dto.PublicationMetadata;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +34,7 @@ class AggregatorServiceTest {
         String hash = "test-hash";
         String content = "test-content";
         Instant timestamp = Instant.now();
-        PublicationMetadataResponse metadata = PublicationMetadataResponse.builder()
+        PublicationMetadata metadata = PublicationMetadata.builder()
                 .hash("test-hash")
                 .title("test-title")
                 .author("test-author")
@@ -68,7 +67,7 @@ class AggregatorServiceTest {
         String hash = "expired-hash";
         String content = "test-content";
         Instant timestamp = Instant.now();
-        PublicationMetadataResponse metadata = PublicationMetadataResponse.builder()
+        PublicationMetadata metadata = PublicationMetadata.builder()
                 .hash("test-hash")
                 .title("test-title")
                 .author("test-author")

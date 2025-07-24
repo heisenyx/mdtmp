@@ -3,7 +3,7 @@ package dev.heisen.aggregator.service;
 import dev.heisen.aggregator.client.MetadataClient;
 import dev.heisen.aggregator.client.StorageClient;
 import dev.heisen.aggregator.dto.AggregatedPublication;
-import dev.heisen.aggregator.dto.PublicationMetadataResponse;
+import dev.heisen.aggregator.dto.PublicationMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class AggregatorService {
 
         String content = storageClient.getContent(hash);
 
-        PublicationMetadataResponse metadata = metadataClient.getPublicationMetadata(hash);
+        PublicationMetadata metadata = metadataClient.getPublicationMetadata(hash);
 
         return AggregatedPublication.builder()
                 .hash(hash)

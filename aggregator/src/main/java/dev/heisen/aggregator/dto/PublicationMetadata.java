@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.Instant;
 
 @Builder
-public record PublicationMetadataResponse(
+public record PublicationMetadata(
         String hash,
         String title,
         String author,

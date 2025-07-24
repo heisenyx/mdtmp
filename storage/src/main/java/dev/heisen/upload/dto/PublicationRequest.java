@@ -3,7 +3,6 @@ package dev.heisen.upload.dto;
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
-import org.springframework.validation.annotation.Validated;
 
 @Builder
 public record PublicationRequest(
@@ -17,7 +16,7 @@ public record PublicationRequest(
         String author,
 
         @NotBlank
-        @Size(max = 128000)
+        @Size(max = 128000) // 128kb
         String content,
 
         @NotNull
