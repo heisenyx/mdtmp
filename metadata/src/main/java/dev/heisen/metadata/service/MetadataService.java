@@ -26,7 +26,7 @@ public class MetadataService {
                 .author(event.author())
                 .createdAt(event.createdAt())
                 .ttlMinutes(event.ttlMinutes())
-                .isExpired(false)
+                .expired(false)
                 .build();
         repository.save(publication);
 
@@ -35,7 +35,7 @@ public class MetadataService {
 
     public PublicationMetadataResponse get(String hash) {
 
-        Publication publication = repository.findByHashAndIsExpiredFalse(hash)
+        Publication publication = repository.findByHashAndExpiredFalse(hash)
                 .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
 
         return mapper.toResponse(publication);
@@ -43,7 +43,7 @@ public class MetadataService {
 
     public void expire(String hash) {
 
-        Publication publication = repository.findByHashAndIsExpiredFalse(hash)
+        Publication publication = repository.findByHashAndExpiredFalse(hash)
                 .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
         publication.setExpired(true);
         repository.save(publication);

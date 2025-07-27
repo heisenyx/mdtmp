@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EnhancementService {
 
-    private final String ENHANCE_PROMPT = """
+    private static final String ENHANCE_PROMPT = """
         You’re a skilled editor. Given a title and Markdown content, polish for clarity, engagement, and style:
 
         1. Rewrite the title to be catchy and SEO‑friendly.
@@ -22,7 +22,7 @@ public class EnhancementService {
 
         Content:
         {{Content}}
-        """;
+        """.stripIndent();
 
     private final AiService aiService;
 
