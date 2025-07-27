@@ -26,7 +26,7 @@ public class MetadataService {
                 .author(event.author())
                 .createdAt(event.createdAt())
                 .ttlMinutes(event.ttlMinutes())
-                .isExpired(false)
+                .expired(false)
                 .build();
         repository.save(publication);
 

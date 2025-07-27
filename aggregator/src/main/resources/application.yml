@@ -10,7 +10,7 @@ spring:
   application:
     name: aggregator-service
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env
 
 springdoc:
   swagger-ui:

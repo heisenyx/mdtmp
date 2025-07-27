@@ -35,5 +35,5 @@ public class Publication {
     private int ttlMinutes;
 
     @Column(name = "is_expired", nullable = false)
-    private boolean isExpired;
+    private boolean expired;
 }
