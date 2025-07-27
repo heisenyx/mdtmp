@@ -35,7 +35,7 @@ public class MetadataService {
 
     public PublicationMetadataResponse get(String hash) {
 
-        Publication publication = repository.findByHashAndExpiredFalse(hash)
+        Publication publication = repository.findByHashAndIsExpiredFalse(hash)
                 .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
 
         return mapper.toResponse(publication);
@@ -43,7 +43,7 @@ public class MetadataService {
 
     public void expire(String hash) {
 
-        Publication publication = repository.findByHashAndExpiredFalse(hash)
+        Publication publication = repository.findByHashAndIsExpiredFalse(hash)
                 .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
         publication.setExpired(true);
         repository.save(publication);
