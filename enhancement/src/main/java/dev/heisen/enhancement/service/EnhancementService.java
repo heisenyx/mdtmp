@@ -43,8 +43,6 @@ public class EnhancementService {
                 .messages(systemMessage, userMessage)
                 .build();
 
-        System.out.print(prompt);
-
         return aiService.chat(prompt);
     }
 }
