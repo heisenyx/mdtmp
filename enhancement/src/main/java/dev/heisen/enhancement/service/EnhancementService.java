@@ -2,34 +2,49 @@ package dev.heisen.enhancement.service;
 
 import dev.heisen.enhancement.dto.EnhancementRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EnhancementService {
 
-    private static final String ENHANCE_PROMPT = """
-        You’re a skilled editor. Given a title and Markdown content, polish for clarity, engagement, and style:
+    private static final String SYSTEM_INSTRUCTION = """
+        You are a skilled editor. Your task is to polish the given Markdown content for clarity, engagement, and style.
+        Output only the final, enhanced Markdown content! Without any titles, metadata, prefixes, or conversational text.
+        """;
 
-        1. Rewrite the title to be catchy and SEO‑friendly.
-        2. Add/adjust headings (`##`, `###`), intro (1–2 lines) and conclusion.
-        3. Improve grammar, flow, and use active voice.
-        4. Use bullets or lists where helpful.
-        5. Maintain a friendly, professional tone and address “you.”
-        6. Output only the final Markdown content.
+    private static final String USER_TEMPLATE = """
+        Please enhance the following content. Follow these rules:
+        
+        1. Add or adjust headings (`##`, `###`), write a short 1-2 line introduction, and a conclusion.
+        2. Improve grammar, sentence flow, and use the active voice where possible.
+        3. Use bullet points or numbered lists if it improves readability.
+        4. Maintain a friendly yet professional tone, addressing the reader as "you."
 
-        Title: {{Title}}
-
-        Content:
+        Content to enhance:
         {{Content}}
         """.stripIndent();
 
     private final AiService aiService;
 
     public String enhance(EnhancementRequest request) {
-        String prompt = ENHANCE_PROMPT
-                .replace("{{Title}}", request.title())
-                .replace("{{Content}}", request.content());
+        SystemMessage systemMessage = SystemMessage.builder()
+                .text(SYSTEM_INSTRUCTION)
+                .build();
+
+        UserMessage userMessage = UserMessage.builder()
+                .text(USER_TEMPLATE.replace("{{Content}}", request.content()))
+                .build();
+
+        Prompt prompt = Prompt.builder()
+                .messages(systemMessage, userMessage)
+                .build();
+
+        System.out.print(prompt);
+
         return aiService.chat(prompt);
     }
 }
