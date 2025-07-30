@@ -22,12 +22,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set-up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build ${{matrix.service}}
+
+      - name: Build & Test ${{matrix.service}}
         run: |
           cd ${{matrix.service}}
-          ./mvn -B package --file pom.xml
+          ./mvnw -B clean verify
