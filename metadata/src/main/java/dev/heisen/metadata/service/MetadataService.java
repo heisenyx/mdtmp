@@ -1,7 +1,7 @@
 package dev.heisen.metadata.service;
 
 import dev.heisen.metadata.dto.PublicationMetadataResponse;
-import dev.heisen.metadata.exception.PublicationNotFoundException;
+import dev.heisen.metadata.exception.MetadataNotFoundException;
 import dev.heisen.upload.event.PublicationEvent;
 import dev.heisen.metadata.mapper.PublicationMapper;
 import dev.heisen.metadata.model.Publication;
@@ -36,7 +36,7 @@ public class MetadataService {
     public PublicationMetadataResponse get(String hash) {
 
         Publication publication = repository.findByHashAndExpiredFalse(hash)
-                .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
+                .orElseThrow(() -> new MetadataNotFoundException("Publication metadata not found"));
 
         return mapper.toResponse(publication);
     }
@@ -44,7 +44,7 @@ public class MetadataService {
     public void expire(String hash) {
 
         Publication publication = repository.findByHashAndExpiredFalse(hash)
-                .orElseThrow(() -> new PublicationNotFoundException("Publication not found"));
+                .orElseThrow(() -> new MetadataNotFoundException("Publication metadata not found"));
         publication.setExpired(true);
         repository.save(publication);
     }

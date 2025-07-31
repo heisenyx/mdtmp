@@ -3,7 +3,6 @@ package dev.heisen.upload.service;
 import dev.heisen.upload.dto.PublicationRequest;
 import dev.heisen.upload.dto.PublicationResponse;
 import dev.heisen.upload.event.PublicationEvent;
-import dev.heisen.upload.exception.StorageException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -27,11 +26,7 @@ public class PublicationService {
         byte[] data = request.content().getBytes(StandardCharsets.UTF_8);
         Instant now = Instant.now();
 
-        try {
-            s3Service.uploadFile(generatedHash, data, MARKDOWN_CONTENT_TYPE);
-        } catch (Exception e) {
-            throw new StorageException("Failed to upload file to S3", e);
-        }
+        s3Service.uploadFile(generatedHash, data, MARKDOWN_CONTENT_TYPE);
 
         PublicationEvent event = PublicationEvent.builder()
                 .hash(generatedHash)
@@ -52,23 +47,11 @@ public class PublicationService {
     }
 
     public String getContent(String hash) {
-
-        String content;
-        try {
-            byte[] data = s3Service.getFile(hash);
-            content = new String(data, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            throw new StorageException("Failed to retrieve file from S3", e);
-        }
-
-        return content;
+        byte[] data = s3Service.getFile(hash);
+        return new String(data, StandardCharsets.UTF_8);
     }
 
     public void delete(String hash) {
-        try {
-            s3Service.deleteFile(hash);
-        } catch (Exception e) {
-            throw new StorageException("Failed to delete file from S3", e);
-        }
+        s3Service.deleteFile(hash);
     }
 }
