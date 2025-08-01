@@ -54,7 +54,7 @@ public class ExpirerService {
 
                 redis.opsForZSet().remove(ZSET_KEY, key);
             } catch (Exception e) {
-                log.error("Error while expire expiration for key {}", key, e);
+                log.error("Error while processing expiration for key {}", key, e);
                 throw new ExpirerException("Failed to expire key: " + key, e);
             }
         }

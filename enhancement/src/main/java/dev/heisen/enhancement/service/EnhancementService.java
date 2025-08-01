@@ -1,7 +1,6 @@
 package dev.heisen.enhancement.service;
 
 import dev.heisen.enhancement.dto.EnhancementRequest;
-import dev.heisen.enhancement.exception.EnhanceFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -46,7 +45,7 @@ public class EnhancementService {
 
         try {
             return aiService.chat(prompt);
-        } catch (EnhanceFailedException e) {
+        } catch (Exception e) {
             return request.content();
         }
     }
