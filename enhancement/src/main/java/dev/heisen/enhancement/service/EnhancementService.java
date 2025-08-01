@@ -43,6 +43,10 @@ public class EnhancementService {
                 .messages(systemMessage, userMessage)
                 .build();
 
-        return aiService.chat(prompt);
+        try {
+            return aiService.chat(prompt);
+        } catch (Exception e) {
+            return request.content();
+        }
     }
 }

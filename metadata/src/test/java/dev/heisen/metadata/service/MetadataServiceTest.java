@@ -1,7 +1,7 @@
 package dev.heisen.metadata.service;
 
 import dev.heisen.metadata.dto.PublicationMetadataResponse;
-import dev.heisen.metadata.exception.PublicationNotFoundException;
+import dev.heisen.metadata.exception.MetadataNotFoundException;
 import dev.heisen.metadata.mapper.PublicationMapper;
 import dev.heisen.metadata.model.Publication;
 import dev.heisen.metadata.repository.PublicationRepository;
@@ -56,7 +56,7 @@ class MetadataServiceTest {
                 .author(publicationEvent.author())
                 .createdAt(publicationEvent.createdAt())
                 .ttlMinutes(publicationEvent.ttlMinutes())
-                .isExpired(false)
+                .expired(false)
                 .build();
 
         metadataService.create(publicationEvent);
@@ -99,7 +99,7 @@ class MetadataServiceTest {
                 .author(publicationEvent.author())
                 .createdAt(publicationEvent.createdAt())
                 .ttlMinutes(publicationEvent.ttlMinutes())
-                .isExpired(false)
+                .expired(false)
                 .build();
 
         PublicationMetadataResponse expectedResponse = PublicationMetadataResponse.builder()
@@ -126,7 +126,7 @@ class MetadataServiceTest {
     @Test
     void testGet_withInvalidHash_shouldReturnPublicationNotFoundException() {
         assertThrows(
-                PublicationNotFoundException.class
+                MetadataNotFoundException.class
                 , () -> metadataService.get("invalidHash")
         );
     }
@@ -140,7 +140,7 @@ class MetadataServiceTest {
                 .author(publicationEvent.author())
                 .createdAt(publicationEvent.createdAt())
                 .ttlMinutes(publicationEvent.ttlMinutes())
-                .isExpired(false)
+                .expired(false)
                 .build();
 
 
