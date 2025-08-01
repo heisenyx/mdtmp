@@ -9,9 +9,11 @@ import dev.heisen.metadata.repository.PublicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MetadataService {
 
     private final PublicationRepository repository;

@@ -5,6 +5,8 @@ import dev.heisen.expirer.client.StorageClient;
 import dev.heisen.expirer.exception.ExpirerException;
 import dev.heisen.upload.event.PublicationEvent;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +19,8 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class ExpirerService {
+
+    private static final Logger log = LoggerFactory.getLogger(ExpirerService.class);
 
     private final String ZSET_KEY = "publications:expirations";
     private final RedisTemplate<String, String> redis;
@@ -50,6 +54,7 @@ public class ExpirerService {
 
                 redis.opsForZSet().remove(ZSET_KEY, key);
             } catch (Exception e) {
+                log.error("Error while expire expiration for key {}", key, e);
                 throw new ExpirerException("Failed to expire key: " + key, e);
             }
         }
