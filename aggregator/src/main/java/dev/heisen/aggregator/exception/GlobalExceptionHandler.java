@@ -15,9 +15,20 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(PublicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePublicationNotFound(PublicationNotFoundException ex, HttpServletRequest request) {
+        ErrorResponse response = ErrorResponse.builder()
+                .timestamp(Instant.now().toString())
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
     @ExceptionHandler(AggregateException.class)
     public ResponseEntity<ErrorResponse> handleAggregate(AggregateException ex, HttpServletRequest request) {
-        return buildError(HttpStatus.NOT_FOUND, ex, request);
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 
     @ExceptionHandler(Exception.class)

@@ -16,3 +16,9 @@ spring:
           frequency-penalty: 0.5
           presence-penalty: 1
           max-tokens: 128000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
