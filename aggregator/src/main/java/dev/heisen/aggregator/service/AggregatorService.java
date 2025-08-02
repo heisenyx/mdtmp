@@ -5,6 +5,7 @@ import dev.heisen.aggregator.client.StorageClient;
 import dev.heisen.aggregator.dto.AggregatedPublication;
 import dev.heisen.aggregator.dto.PublicationMetadata;
 import dev.heisen.aggregator.exception.AggregateException;
+import dev.heisen.aggregator.exception.PublicationNotFoundException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,9 +27,10 @@ public class AggregatorService {
         try {
             metadata = metadataClient.getPublicationMetadata(hash);
         } catch (FeignException.NotFound e) {
-            throw new AggregateException("Publication metadata not found");
+            log.debug("Metadata for hash '{}' not found", hash);
+            throw new PublicationNotFoundException("Publication metadata not found");
         } catch (Exception e) {
-            log.error("Error fetching metadata for {}: {}", hash, e.getMessage(), e);
+            log.info("Error fetching metadata for '{}': {}", hash, e.getMessage(), e);
             throw new AggregateException("Error fetching metadata");
         }
 
@@ -36,9 +38,10 @@ public class AggregatorService {
         try {
             content = storageClient.getContent(hash);
         } catch (FeignException.NotFound e) {
-            throw new AggregateException("Publication content not found");
+            log.debug("Content for hash '{}' not found", hash);
+            throw new PublicationNotFoundException("Publication content not found");
         } catch (Exception e) {
-            log.error("Error fetching content for {}: {}", hash, e.getMessage(), e);
+            log.error("Error fetching content for '{}': {}", hash, e.getMessage(), e);
             throw new AggregateException("Error fetching content");
         }
 

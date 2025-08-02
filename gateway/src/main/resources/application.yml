@@ -40,21 +40,28 @@ spring:
           predicates:
             - "Path=/docs/storage/v3/api-docs/**"
           filters:
-            - RewritePath=/docs/storage/(?<segment>.*), /$\{segment}
+            - RewritePath=/docs/storage/(?<segment>.*), /${segment}
 
         - id: docs_metadata
           uri: http://localhost:8082
           predicates:
             - "Path=/docs/metadata/v3/api-docs/**"
           filters:
-            - RewritePath=/docs/metadata/(?<segment>.*), /$\{segment}
+            - RewritePath=/docs/metadata/(?<segment>.*), /${segment}
 
         - id: docs_aggregator
           uri: http://localhost:8083
           predicates:
             - "Path=/docs/aggregator/v3/api-docs/**"
           filters:
-            - RewritePath=/docs/aggregator/(?<segment>.*), /$\{segment}
+            - RewritePath=/docs/aggregator/(?<segment>.*), /${segment}
+
+        - id: docs_enhancement
+          uri: http://localhost:8086
+          predicates:
+            - "Path=/docs/enhancement/v3/api-docs/**"
+          filters:
+            - RewritePath=/docs/enhancement/(?<segment>.*), /${segment}
 
 springdoc:
   swagger-ui:
@@ -66,5 +73,7 @@ springdoc:
         url: /docs/metadata/v3/api-docs
       - name: Aggregator Service
         url: /docs/aggregator/v3/api-docs
+      - name: Enhancement Service
+        url: /docs/enhancement/v3/api-docs
   api-docs:
     path: /v3/api-docs
