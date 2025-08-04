@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback} from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { StarterKit } from '@syfxlin/tiptap-starter-kit'
+import toast from 'react-hot-toast';
+import { savePublication, enhancePublication } from '../services/client';
+import { Markdown } from 'tiptap-markdown';
+import TextAlign from '@tiptap/extension-text-align';
 
 const loadDraft = () => {
   try {
@@ -14,26 +18,67 @@ export default function ContentEditor() {
     const draft = loadDraft()
     const [title, setTitle]   = useState(draft.t || '')
     const [author, setAuthor] = useState(draft.a || '')
-    const [content, setContent] = useState(draft.c || `
-        <p>This is a basic example of usage. Press / to see available commands. Click on Image to resize and align.</p>
-        <img src="https://placehold.co/800x400/6A00F5/white" />
-    `)
+    const [content, setContent] = useState(draft.c || 'This is a basic example of usage. Press / to see available commands. Click on Image to resize and align. ![](https://placehold.co/800x400/6A00F5/white)')
+
+    const handlePublish = useCallback(async () => {
+
+        const mdContent = editor.storage.markdown.getMarkdown();
+
+        try {
+            await toast.promise(
+                savePublication(title, author, mdContent, 100),
+                {
+                    loading: 'Publishing...',
+                    success: <b>Successfully published!</b>,
+                    error:   <b>Something went wrong!</b>,
+                }
+            )
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
+    const handleEnhance = useCallback(async () => {
+
+        const mdContent = editor.storage.markdown.getMarkdown();
+
+        try {
+            const response = await toast.promise(
+                enhancePublication(title, mdContent),
+                {
+                    loading: 'Just a moment, please...',
+                    success: <b>Enhanced!</b>,
+                    error:   <b>Something went wrong!</b>,
+                }
+            )
+            const enhancedMarkdown = response.data
+            setContent(enhancedMarkdown)
+            editor.commands.setContent(enhancedMarkdown)
+        } catch (e) {
+            console.error(e)
+        }
+    })
 
     const editor = useEditor({
         extensions: [
-            StarterKit.configure({ slashMenu: true, floatMenu: false }),
+            StarterKit.configure({ slashMenu: true, floatMenu: false}), 
+            Markdown,
+            TextAlign.configure({
+                types: ['heading', 'paragraph'],
+                defaultAlignment: 'left',
+            }),
         ],
-        content: content,
+        content,
         autofocus: true,
         onUpdate({ editor }) {
-            setContent(editor.getJSON())
-        },
+            setContent(editor.storage.markdown.getMarkdown())
+        }
     })
 
     useEffect(() => {
         localStorage.setItem(
-        'draft',
-        JSON.stringify({ t: title, a: author, c: content })
+            'draft',
+            JSON.stringify({ t: title, a: author, c: content })
         )
     }, [title, author, content])
 
@@ -62,14 +107,14 @@ export default function ContentEditor() {
         <button
             type="button"
             className='btn btn-secondary'
-            // onClick={enhance}
+            onClick={handleEnhance}
         >
             Enhance
         </button>
         <button
             type="button"
             className='btn btn-primary'
-            // onClick={publish}
+            onClick={handlePublish}
         >
             Publish
         </button>
