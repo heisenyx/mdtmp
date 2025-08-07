@@ -1,0 +1,102 @@
+:root {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: black;
+    background-color: white;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --btn-bg-primary: #6200ee;
+    --btn-bg-secondary: #0fe07f;
+
+    --btn-shadow-elevated: rgba(0, 0, 0, 0.2);
+    --btn-shadow-hover: rgba(0, 0, 0, 0.3);
+}
+
+a {
+    text-decoration: none;
+}
+
+.ProseMirror-bm-button {
+    color: black;
+}
+
+.editor-container {
+    max-width: 50vw;
+    margin: 2rem auto;
+}
+
+.input-field {
+    color: black;
+    width: 100%;
+    border: none;
+    font-size: 1.5rem;
+    background-color: white;
+}
+
+.input-field:focus {
+    outline: none;
+}
+
+.input-field.author {
+    font-size: 0.9rem;
+    color: #000000a1;
+    padding-bottom: 1.5rem;
+}
+
+.input-field.content {
+    font-size: 1.2rem;
+    min-height: 60vh;
+    font-family: inherit;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 8px var(--btn-shadow-elevated);
+}
+
+.btn:hover {
+    box-shadow: 0 6px 12px var(--btn-shadow-hover);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    box-shadow: 0 3px 6px var(--btn-shadow-elevated);
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: var(--btn-bg-primary);
+}
+
+.btn-secondary {
+    background-color: var(--btn-bg-secondary);
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
