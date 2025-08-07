@@ -3,7 +3,7 @@ import axios from 'axios';
 export const savePublication = async (title, author, content, ttlMinutes) => {
   try {
     return await axios.post(
-      `api/publications/publish`,
+      `/api/publications/publish`,
       { title, author, content, ttlMinutes }
     );
   } catch (e) {
@@ -14,7 +14,7 @@ export const savePublication = async (title, author, content, ttlMinutes) => {
 export const enhancePublication = async (title, content) => {
   try {
     return await axios.post(
-      `api/publications/enhance`,
+      `/api/publications/enhance`,
       { title, content }
     );
   } catch (e) {
@@ -23,11 +23,7 @@ export const enhancePublication = async (title, content) => {
 }
 
 export const getPublication = async (hash) => {
-  try {
-    return await axios.get(
-      `api/publications/${hash}`
-    );
-  } catch (e) {
-    throw e;
-  }
+  return await axios.get(
+    `/api/publications/${hash}`
+  );
 }

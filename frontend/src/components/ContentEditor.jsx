@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { savePublication, enhancePublication } from '../services/client';
 import { Markdown } from 'tiptap-markdown';
 import TextAlign from '@tiptap/extension-text-align';
+import { useNavigate } from 'react-router-dom';
 
 const loadDraft = () => {
     try {
@@ -17,21 +18,23 @@ const loadDraft = () => {
 }
 
 export default function ContentEditor() {
-    const draft = loadDraft()
-    const [title, setTitle] = useState(draft.t || '')
-    const [author, setAuthor] = useState(draft.a || '')
-    const [content, setContent] = useState(draft.c || 'This is a basic example of usage. Press `/` to see available commands. Click on Image to resize and align. ![](https://placehold.co/800x400/6A00F5/white)')
+
+    const draft = loadDraft();
+    const navigate = useNavigate();
+    const [title, setTitle] = useState(draft.t || '');
+    const [author, setAuthor] = useState(draft.a || '');
+    const [content, setContent] = useState(draft.c || 'This is a basic example of usage. Press `/` to see available commands. Click on Image to resize and align. ![](https://placehold.co/800x400/6A00F5/white)');
 
     const validate = useCallback((title, content) => {
         if (!title.trim()) {
-            toast.error('Please enter a title before continuing')
-            return false
+            toast.error('Please enter a title before continuing');
+            return false;
         }
         if (content.trim().length < 20) {
-            toast.error('Content is too short!')
-            return false
+            toast.error('Content is too short!');
+            return false;
         }
-        return true
+        return true;
     }, [])
 
     const handlePublish = useCallback(async () => {
@@ -40,16 +43,19 @@ export default function ContentEditor() {
         if (!validate(title, mdContent)) return;
 
         try {
-            await toast.promise(
+            const response = await toast.promise(
                 savePublication(title, author, mdContent, 100),
                 {
                     loading: 'Publishing...',
                     success: <b>Successfully published!</b>,
                     error: <b>Something went wrong!</b>,
                 }
-            )
+            );
+
+            const hash = response.data.hash;
+            navigate(`/p/${hash}`);
         } catch (e) {
-            console.error(e)
+            console.error(e);
         }
     });
 
@@ -89,7 +95,7 @@ export default function ContentEditor() {
         onUpdate({ editor }) {
             setContent(editor.storage.markdown.getMarkdown())
         }
-    })
+    });
 
     useEffect(() => {
         localStorage.setItem(
