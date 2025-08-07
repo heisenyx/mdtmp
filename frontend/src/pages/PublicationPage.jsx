@@ -10,6 +10,12 @@ import { Markdown } from 'tiptap-markdown';
 export default function PublicationPage() {
     const { hash } = useParams();
     const [publication, setPublication] = useState();
+    const [loading, setLoading] = useState(true);
+
+    const editor = useEditor({
+        extensions: [StarterKit, Markdown],
+        editable: false
+    });
 
     useEffect(() => {
         async function fetchPublication() {
@@ -18,21 +24,20 @@ export default function PublicationPage() {
                 setPublication(response.data);
             } catch (e) {
                 console.error("Failed to fetch publication:", e);
+            } finally {
+                setLoading(false);
             }
         }
         fetchPublication();
     }, [hash]);
 
-    const editor = useEditor({
-        extensions: [StarterKit, Markdown],
-        editable: false
-    });
+    useEffect(() => {
+        if (editor && publication) {
+            editor.commands.setContent(publication.content);
+        }
+    }, [editor, publication]);
 
-    if (!publication) {
-        return;
-    } else {
-        editor.commands.setContent(publication.content);
-    }
+    if (loading) return;
 
     return (
         <>

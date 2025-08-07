@@ -24,7 +24,23 @@ export default function ContentEditor() {
     const [title, setTitle] = useState(draft.t || '');
     const [author, setAuthor] = useState(draft.a || '');
     const [content, setContent] = useState(draft.c || 'This is a basic example of usage. Press `/` to see available commands. Click on Image to resize and align. ![](https://placehold.co/800x400/6A00F5/white)');
-
+    
+    const editor = useEditor({
+        extensions: [
+            StarterKit.configure({ slashMenu: true, floatMenu: false }),
+            Markdown,
+            TextAlign.configure({
+                types: ['heading', 'paragraph'],
+                defaultAlignment: 'left',
+            }),
+        ],
+        content,
+        autofocus: true,
+        onUpdate({ editor }) {
+            setContent(editor.storage.markdown.getMarkdown())
+        }
+    });
+    
     const validate = useCallback((title, content) => {
         if (!title.trim()) {
             toast.error('Please enter a title before continuing');
@@ -57,7 +73,7 @@ export default function ContentEditor() {
         } catch (e) {
             console.error(e);
         }
-    });
+    }, [editor, title, author, validate, navigate]);
 
     const handleEnhance = useCallback(async () => {
 
@@ -79,23 +95,7 @@ export default function ContentEditor() {
         } catch (e) {
             console.error(e)
         }
-    });
-
-    const editor = useEditor({
-        extensions: [
-            StarterKit.configure({ slashMenu: true, floatMenu: false }),
-            Markdown,
-            TextAlign.configure({
-                types: ['heading', 'paragraph'],
-                defaultAlignment: 'left',
-            }),
-        ],
-        content,
-        autofocus: true,
-        onUpdate({ editor }) {
-            setContent(editor.storage.markdown.getMarkdown())
-        }
-    });
+    }, [editor, setContent, title, validate]);
 
     useEffect(() => {
         localStorage.setItem(
