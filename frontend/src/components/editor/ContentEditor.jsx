@@ -65,7 +65,12 @@ export default function ContentEditor() {
 
             try {
                 const response = await toast.promise(
-                    savePublication(values.title, values.author, values.content, values.ttl),
+                    savePublication(
+                        values.title,
+                        values.author,
+                        values.content,
+                        ttlToMinutes({ ttl: values.ttl, ttlUnit: values.ttlUnit })
+                    ),
                     {
                         loading: 'Publishing...',
                         success: <b>Successfully published!</b>,
