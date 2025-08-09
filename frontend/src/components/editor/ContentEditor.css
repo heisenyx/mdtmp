@@ -1,0 +1,192 @@
+:root {
+    --font-sans: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --text: #111827;
+    --muted: #6b7280;
+    --bg: #ffffff;
+    --surface: #f8fafc;
+    --border: rgba(0, 0, 0, 0.12);
+
+    --btn-bg-primary: #6200ee;
+    --btn-bg-secondary: #0fe07f;
+    --btn-text-on: #ffffff;
+
+    --btn-shadow-elevated: rgba(0, 0, 0, 0.12);
+    --btn-shadow-hover: rgba(0, 0, 0, 0.18);
+
+    font-family: var(--font-sans), serif;
+    font-optical-sizing: auto;
+    line-height: 1.5;
+    color-scheme: light dark;
+    color: var(--text);
+    background-color: var(--bg);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.ProseMirror-bm-button {
+    color: var(--text);
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.controls label,
+.ttl-container label {
+    font-size: 0.95rem;
+    color: var(--muted);
+    display: inline-block;
+    margin-right: 0.25rem;
+    white-space: nowrap;
+}
+
+.editor-container {
+    max-width: 50vw;
+    margin: 2rem auto;
+}
+
+.input-field {
+    color: var(--text);
+    width: 100%;
+    border: none;
+    font-size: 1.5rem;
+    background-color: transparent;
+}
+
+.input-field:focus {
+    outline: none;
+}
+
+.input-field.author {
+    font-size: 0.9rem;
+    color: #000000a1;
+    padding-bottom: 1.5rem;
+}
+
+.input-field.content {
+    font-size: 1.2rem;
+    min-height: 60vh;
+    font-family: inherit;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.08s ease;
+    box-shadow: 0 6px 18px var(--btn-shadow-elevated);
+    color: var(--btn-text-on);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn:hover {
+    box-shadow: 0 10px 26px var(--btn-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    box-shadow: 0 4px 12px var(--btn-shadow-elevated);
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: var(--btn-bg-primary);
+}
+
+.btn-secondary {
+    background-color: var(--btn-bg-secondary);
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ttl-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.03);
+    max-width: 100%;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.ttl-input {
+    appearance: none;
+    width: 6ch;
+    min-width: 4.5rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: #fff;
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) inset;
+    transition: box-shadow 0.12s, border-color 0.12s, transform 0.08s;
+    color: var(--text);
+}
+
+.ttl-input::-webkit-outer-spin-button,
+.ttl-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ttl-select {
+    padding: 0.35rem 0.9rem 0.35rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: #fff;
+    font-size: 0.95rem;
+    min-width: 7.5rem;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.ttl-input:focus,
+.ttl-select:focus  {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(98, 0, 238, 0.12);
+    border-color: var(--btn-bg-primary);
+    border-radius: 8px;
+}
