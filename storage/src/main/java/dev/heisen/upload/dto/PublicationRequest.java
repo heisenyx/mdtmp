@@ -21,7 +21,7 @@ public record PublicationRequest(
 
         @NotNull
         @Min(1)
-        @Max(40320) // month in minutes
+        @Max(43830) // month in minutes
         int ttlMinutes
 ) {
 }
