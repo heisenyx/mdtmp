@@ -10,6 +10,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,11 @@ public class AggregatorService {
     private final StorageClient storageClient;
     private final MetadataClient metadataClient;
 
+    @Cacheable(value = "publications", key = "#hash",
+            unless = "#result.expired()")
     public AggregatedPublication aggregate(String hash) {
+
+        log.info("Aggregating publications for hash {}", hash);
 
         PublicationMetadata metadata;
         try {
@@ -52,7 +57,7 @@ public class AggregatorService {
                 .author(metadata.author())
                 .createdAt(metadata.createdAt())
                 .ttlMinutes(metadata.ttlMinutes())
-                .isExpired(metadata.isExpired())
+                .expired(metadata.expired())
                 .build();
     }
 }

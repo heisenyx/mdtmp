@@ -10,7 +10,12 @@ spring:
   application:
     name: aggregator-service
   config:
-    import: optional:file:.env
+    import: optional:file:.env[.properties]
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD:redis}
 
 springdoc:
   swagger-ui:

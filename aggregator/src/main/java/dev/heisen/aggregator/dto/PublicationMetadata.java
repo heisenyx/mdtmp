@@ -11,6 +11,6 @@ public record PublicationMetadata(
         String author,
         Instant createdAt,
         int ttlMinutes,
-        boolean isExpired
+        boolean expired
 ) {
 }

@@ -5,10 +5,10 @@ spring:
   application:
     name: metadata-service
   config:
-    import: optional:file:.env
+    import: optional:file:.env[.properties]
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/publications
+    url: jdbc:postgresql://${POSTGRES_URL:localhost:5432}/${POSTGRES_DB_NAME:publications}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver

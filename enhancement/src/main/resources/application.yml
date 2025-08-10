@@ -1,11 +1,11 @@
 server:
-  port: 8086
+  port: 8085
 
 spring:
   application:
     name: enhancement-service
   config:
-    import: optional:file:.env
+    import: optional:file:.env[.properties]
 
   ai:
     ollama:

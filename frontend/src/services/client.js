@@ -23,7 +23,11 @@ export const enhancePublication = async (title, content) => {
 }
 
 export const getPublication = async (hash) => {
-  return await axios.get(
-    `/api/publications/${hash}`
-  );
+  try {
+    return await axios.get(
+      `/api/publications/${hash}`
+    );
+  } catch (e) {
+    throw e;
+  }
 }

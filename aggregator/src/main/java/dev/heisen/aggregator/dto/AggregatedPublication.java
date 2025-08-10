@@ -12,6 +12,6 @@ public record AggregatedPublication(
         String author,
         Instant createdAt,
         int ttlMinutes,
-        boolean isExpired
+        boolean expired
 ) {
 }
