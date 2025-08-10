@@ -18,7 +18,7 @@ spring:
 aws:
   s3:
     bucket: ${AWS_S3_BUCKET:publications}
-    region: ${AWS_REGION:eu-east-1}
+    region: ${AWS_REGION:eu-west-1}
     access-key: ${AWS_ACCESS_KEY_ID:minioroot}
     secret-key: ${AWS_SECRET_ACCESS_KEY:minioroot}
     endpoint: ${AWS_ENDPOINT:http://localhost:9000}

@@ -45,7 +45,7 @@ export default function PublicationPage() {
             <div className="controls">
                 <h1>Publication not found!</h1>
                 <p>The publication you are looking for does not exist.</p>
-                <button className='btn btn-primary'><Link to="/">Back</Link></button>
+                <Link to="/" className="btn btn-primary">Back</Link>
             </div>
         )
     }
