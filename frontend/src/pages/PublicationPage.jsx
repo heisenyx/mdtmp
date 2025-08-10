@@ -1,6 +1,6 @@
 import './PublicationPage.css'
 
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getPublication } from '../services/client';
 import { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react'
@@ -11,6 +11,7 @@ export default function PublicationPage() {
     const { hash } = useParams();
     const [publication, setPublication] = useState();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     const editor = useEditor({
         extensions: [StarterKit, Markdown],
@@ -23,7 +24,7 @@ export default function PublicationPage() {
                 const response = await getPublication(hash);
                 setPublication(response.data);
             } catch (e) {
-                console.error("Failed to fetch publication:", e);
+                setError(true);
             } finally {
                 setLoading(false);
             }
@@ -37,7 +38,17 @@ export default function PublicationPage() {
         }
     }, [editor, publication]);
 
-    if (loading) return;
+    if (loading) return <div>Loading...</div>;
+
+    if (error) {
+        return (
+            <div className="controls">
+                <h1>Publication not found!</h1>
+                <p>The publication you are looking for does not exist.</p>
+                <Link to="/" className="btn btn-primary">Back</Link>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -48,5 +59,5 @@ export default function PublicationPage() {
                 <EditorContent editor={editor} />
             </div>
         </>
-    )
+    );
 }
